@@ -10,7 +10,7 @@ namespace UI.Controllers
 {
     public class AbonnementController : BaseController
     {
-        public AbonnementController(int actionNumber, string connectionString) : base(actionNumber, connectionString) { }
+       // public AbonnementController(int actionNumber, string connectionString) : base(actionNumber, connectionString) { }
 
 
 
@@ -152,7 +152,7 @@ namespace UI.Controllers
                 Console.WriteLine("2. Name");
                 Console.WriteLine("3. Penalty Sum");
                 success = Int32.TryParse(Console.ReadLine(), out fieldNum);
-            } while (success = false || fieldNum < 1 || fieldNum > 2);
+            } while (success = false || fieldNum < 1 || fieldNum > 3);
 
 
             switch(fieldNum)
@@ -164,7 +164,7 @@ namespace UI.Controllers
                     base.fieldString = "name";
                     break;
                 case 3:
-                    base.fieldString = "Penalty Sum";
+                    base.fieldString = "penalty_sum";
                     break;
             }
         }

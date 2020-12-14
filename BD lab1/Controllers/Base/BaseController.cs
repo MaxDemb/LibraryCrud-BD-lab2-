@@ -82,10 +82,10 @@ namespace UI.Controllers
             this.newValue = Console.ReadLine();
 
             ChooseField(" to find");
-            this.fieldToFind[0] = fieldString;
+            this.fieldToFind.Add(fieldString);
 
             Console.WriteLine("Enter value in this field");
-            this.oldValue[0] = Console.ReadLine();
+            this.oldValue.Add(Console.ReadLine());
         }
 
         public virtual void Delete()

@@ -10,8 +10,8 @@ namespace DAL.Models
         public DateTime RegistrationDate { get; set; }
         public int BonusCount { get; set; }
 
-        public int ReaderId { get; set; }
 
         public Reader Reader { get; set; }
+        public int ReaderId { get; set; }
     }
 }

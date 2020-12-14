@@ -96,7 +96,11 @@
           "dependencies": {
             "Npgsql": {
               "target": "Package",
-              "version": "[4.1.5, )"
+              "version": "[5.0.0, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[5.0.0, )"
             }
           },
           "imports": [
