@@ -7,7 +7,7 @@ namespace UI.Controllers
 {
     public class GenreController : BaseController
     {
-        public GenreController(int actionNumber, string connectionString) : base(actionNumber, connectionString) { }
+        public GenreController(int actionNumber) : base(actionNumber) { }
 
         public override void Delete()
         {
@@ -15,7 +15,9 @@ namespace UI.Controllers
 
             try
             {
-                uow.GenreRepository.Delete(base.deleteId);
+                var entity = context.genres.Find(deleteId);
+                context.genres.Remove(entity);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -26,7 +28,12 @@ namespace UI.Controllers
 
         public override void Read()
         {
-            uow.GenreRepository.Select("");
+            foreach(var i in context.genres)
+            {
+                Console.WriteLine($"id: {i.Id}");
+                Console.WriteLine($"name: {i.Name}");
+            }
+            Console.ReadLine();
         }
         public override void Create()
         {
@@ -54,7 +61,8 @@ namespace UI.Controllers
 
             try
             {
-                uow.GenreRepository.Insert(new Genre { Name = name });
+                context.genres.Add(new Genre { Name = name });
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -67,16 +75,12 @@ namespace UI.Controllers
         {
             base.Find();
 
-            uow.GenreRepository.Select(base.whereExpression);
-        }
+            var i = context.genres.Find(findId);
 
-        public override void Generate()
-        {
-            base.Generate();
-            uow.GenreRepository.Generate(recordsAmount);
-            Console.WriteLine("Success. Press any key to continue...");
+
+            Console.WriteLine($"id: {i.Id}");
+            Console.WriteLine($"name: {i.Name}");
             Console.ReadLine();
-
         }
 
         protected override void ChooseField(string appendString)

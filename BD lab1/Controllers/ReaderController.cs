@@ -7,14 +7,16 @@ namespace UI.Controllers
 {
     public class ReaderController : BaseController
     {
-        public ReaderController(int actionNumber, string connectionString) : base(actionNumber, connectionString) { }
+        public ReaderController(int actionNumber) : base(actionNumber) { }
         public override void Delete()
         {
             base.Delete();
 
             try
             {
-                uow.ReaderRepository.Delete(base.deleteId);
+                var entity = context.abonnements.Find(deleteId);
+                context.abonnements.Remove(entity);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -71,11 +73,13 @@ namespace UI.Controllers
 
             try
             {
-                uow.ReaderRepository.Insert(new Reader { 
+                context.readers.Add(new Reader
+                {
                     Name = name,
                     HomeAdress = home_adress,
                     Problematic = problematic
                 });
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -85,30 +89,32 @@ namespace UI.Controllers
         }
         public override void Read()
         {
-            uow.ReaderRepository.Select("");
+            foreach(var i in context.readers)
+            {
+                Console.WriteLine($"id: {i.Id}");
+                Console.WriteLine($"name: {i.Name}");
+                Console.WriteLine($"penalty sum: {i.Problematic}");
+            }
+            Console.ReadLine();
         }
         public override void Update()
         {
             base.Update();
-            uow.ReaderRepository.Update("reader", base.fieldToUpdate, newValue, fieldToFind[0], oldValue[0]);
+            var entity = context.readers.Find(updateId);
+            context.readers.Update(entity);
+            context.SaveChanges();
         }
         public override void Find()
         {
             base.Find();
-
-            uow.ReaderRepository.Select(base.whereExpression);
-        }
+            var i = context.readers.Find(findId);
 
 
-        public override void Generate()
-        {
-            base.Generate();
-            uow.ReaderRepository.Generate(recordsAmount);
-            Console.WriteLine("Success. Press any key to continue...");
+            Console.WriteLine($"id: {i.Id}");
+            Console.WriteLine($"name: {i.Name}");
+            Console.WriteLine($"penalty sum: {i.Problematic}");
             Console.ReadLine();
-
         }
-
         protected override void ChooseField(string appendString)
         {
             bool success = false;
