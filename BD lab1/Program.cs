@@ -3,6 +3,7 @@ using DAL;
 using System;
 using System.IO;
 using UI.Controllers;
+using System.Linq;
 
 namespace UI
 {
@@ -10,14 +11,12 @@ namespace UI
     {
         static void Main(string[] args)
         {
-            string connectionString = "Host=localhost;Username=postgres;Password=p;Database=Library";
-
             int tableChoice = 0;
             int actionChoice = 0;
             do
             {
                 tableChoice = TableMenu();
-                if(tableChoice == 0)
+                if (tableChoice == 0)
                 {
                     return;
                 }
@@ -29,28 +28,22 @@ namespace UI
                 switch (tableChoice)
                 {
                     case 1:
-                        controller = new AbonnementController(actionChoice, connectionString);
+                        controller = new AbonnementController(actionChoice);
                         break;
                     case 2:
-                        controller = new AuthorController(actionChoice, connectionString);
+                        controller = new AuthorController(actionChoice);
                         break;
                     case 3:
-                        controller = new BookController(actionChoice, connectionString);
+                        controller = new BookController(actionChoice);
                         break;
                     case 4:
-                        controller = new GenreController(actionChoice, connectionString);
-                        break;
-                    case 5:
-                        controller = new ReaderCardController(actionChoice, connectionString);
+                        controller = new GenreController(actionChoice);
                         break;
                     case 6:
-                        controller = new ReaderController(actionChoice, connectionString);
+                        controller = new ReaderController(actionChoice);
                         break;
                 }
-
                 controller.doLogic();
-
-
             } while (true);
         }
 

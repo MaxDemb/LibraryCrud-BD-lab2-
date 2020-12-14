@@ -4,6 +4,6 @@ C:\Users\maxde\source\repos\BD lab1\DAL\obj\Debug\netcoreapp3.1\DAL.csprojAssemb
 C:\Users\maxde\source\repos\BD lab1\DAL\obj\Debug\netcoreapp3.1\DAL.AssemblyInfoInputs.cache
 C:\Users\maxde\source\repos\BD lab1\DAL\obj\Debug\netcoreapp3.1\DAL.AssemblyInfo.cs
 C:\Users\maxde\source\repos\BD lab1\DAL\bin\Debug\netcoreapp3.1\DAL.pdb
-C:\Users\maxde\source\repos\BD lab1\DAL\obj\Debug\netcoreapp3.1\DAL.csproj.CoreCompileInputs.cache
 C:\Users\maxde\source\repos\BD lab1\DAL\obj\Debug\netcoreapp3.1\DAL.dll
 C:\Users\maxde\source\repos\BD lab1\DAL\obj\Debug\netcoreapp3.1\DAL.pdb
+C:\Users\maxde\source\repos\BD lab1\DAL\obj\Debug\netcoreapp3.1\DAL.csproj.CoreCompileInputs.cache

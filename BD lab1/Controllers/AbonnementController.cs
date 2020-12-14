@@ -10,9 +10,9 @@ namespace UI.Controllers
 {
     public class AbonnementController : BaseController
     {
-        public AbonnementController(int actionNumber, string connectionString) : base(actionNumber, connectionString) { }
-
-
+        public AbonnementController(int actionNumber) : base(actionNumber)
+        {
+        }
 
         public override void Create()
         {
@@ -90,7 +90,8 @@ namespace UI.Controllers
 
             try
             {
-                uow.AbonnementRepository.Insert(abonnement);
+                context.abonnements.Add(abonnement);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -100,7 +101,16 @@ namespace UI.Controllers
         }
         public override void Read()
         {
-            uow.AbonnementRepository.Select("");
+            foreach(var i in context.abonnements)
+            {
+                Console.WriteLine($"id: {i.Id}");
+                Console.WriteLine($"name: {i.Name}");
+                Console.WriteLine($"penalty sum: {i.PenaltySum}");
+                Console.WriteLine($"reader id: {i.ReaderId}");
+                Console.WriteLine($"book id: {i.BookId}");
+                Console.WriteLine($"deadline: {i.Deadline}");
+            }
+            Console.ReadLine();
         }
         public override void Delete()
         {
@@ -108,7 +118,9 @@ namespace UI.Controllers
 
             try
             {
-                uow.AbonnementRepository.Delete(base.deleteId);
+                var entity = context.abonnements.Find(deleteId);
+                context.abonnements.Remove(entity);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -120,24 +132,40 @@ namespace UI.Controllers
         public override void Update()
         {
             base.Update();
-            uow.AbonnementRepository.Update("abonnement",base.fieldToUpdate, base.newValue, base.fieldToFind[0], base.oldValue[0]);
+            var entity = context.abonnements.Find(findId);
+
+            ChooseField("You want to update");
+            Console.WriteLine("Enter new value");
+            if(fieldString == "id")
+            {
+                entity.Id = Int32.Parse(Console.ReadLine()); 
+            }
+            else if (fieldString == "name")
+            {
+                entity.Name = Console.ReadLine();
+            }
+            else if(fieldString == "Penalty Sum")
+            {
+                entity.PenaltySum = Int32.Parse(Console.ReadLine());
+            }
+            context.abonnements.Update(entity);
+            context.SaveChanges();
         }
 
         public override void Find()
         {
             base.Find();
 
-            uow.AbonnementRepository.Select(base.whereExpression);
-        }
+            var i = context.abonnements.Find(findId);
 
+            Console.WriteLine($"id: {i.Id}");
+            Console.WriteLine($"name: {i.Name}");
+            Console.WriteLine($"penalty sum: {i.PenaltySum}");
+            Console.WriteLine($"reader id: {i.ReaderId}");
+            Console.WriteLine($"book id: {i.BookId}");
+            Console.WriteLine($"deadline: {i.Deadline}");
 
-        public override void Generate()
-        {
-            base.Generate();
-            uow.AbonnementRepository.Generate(recordsAmount);
-            Console.WriteLine("Success. Press any key to continue...");
             Console.ReadLine();
-
         }
 
         protected override void ChooseField(string appendString)
@@ -152,7 +180,7 @@ namespace UI.Controllers
                 Console.WriteLine("2. Name");
                 Console.WriteLine("3. Penalty Sum");
                 success = Int32.TryParse(Console.ReadLine(), out fieldNum);
-            } while (success = false || fieldNum < 1 || fieldNum > 2);
+            } while (success = false || fieldNum < 1 || fieldNum > 3);
 
 
             switch(fieldNum)
@@ -164,7 +192,7 @@ namespace UI.Controllers
                     base.fieldString = "name";
                     break;
                 case 3:
-                    base.fieldString = "Penalty Sum";
+                    base.fieldString = "penalty_sum";
                     break;
             }
         }

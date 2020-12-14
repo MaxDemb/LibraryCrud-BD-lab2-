@@ -7,7 +7,7 @@ namespace UI.Controllers
 {
     public class BookController : BaseController
     {
-        public BookController(int actionNumber, string connectionString) : base(actionNumber, connectionString) { }
+        public BookController(int actionNumber) : base(actionNumber) { }
 
         public override void Create()
         {
@@ -62,7 +62,8 @@ namespace UI.Controllers
 
             try
             {
-                uow.BookRepository.Insert(book);
+                context.books.Add(book);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -77,7 +78,9 @@ namespace UI.Controllers
 
             try
             {
-                uow.BookRepository.Delete(base.deleteId);
+                var entity = context.books.Find(deleteId);
+                context.books.Remove(entity);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -88,25 +91,33 @@ namespace UI.Controllers
 
         public override void Read()
         {
-            uow.BookRepository.Select("");
+            foreach(var i in context.books)
+            {
+                Console.WriteLine($"id: {i.Id}");
+                Console.WriteLine($"name: {i.Name}");
+                Console.WriteLine($"penalty sum: {i.CreationYear}");
+                Console.WriteLine($"reader id: {i.GenreId}");
+            }
+            Console.ReadLine();
         }
 
         public override void Update()
         {
             base.Update();
-            uow.BookRepository.Update("Book", base.fieldToUpdate, base.newValue, base.fieldToFind[0], base.oldValue[0]);
+            var entity = context.books.Find(updateId);
+            context.books.Update(entity);
+            context.SaveChanges();
         }
         public override void Find()
         {
             base.Find();
 
-            uow.BookRepository.Select(base.whereExpression);
-        }
-        public override void Generate()
-        {
-            base.Generate();
-            uow.BookRepository.Generate(base.recordsAmount);
-            Console.WriteLine("Success. Press any key to continue");
+            var i = context.books.Find(findId);
+
+            Console.WriteLine($"id: {i.Id}");
+            Console.WriteLine($"name: {i.Name}");
+            Console.WriteLine($"penalty sum: {i.CreationYear}");
+            Console.WriteLine($"reader id: {i.GenreId}");
             Console.ReadLine();
         }
         protected override void ChooseField(string appendString)

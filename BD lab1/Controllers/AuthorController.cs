@@ -7,7 +7,7 @@ namespace UI.Controllers
 {
     public class AuthorController : BaseController
     {
-        public AuthorController(int actionNumber, string connectionString) : base(actionNumber, connectionString) { }
+        public AuthorController(int actionNumber) : base(actionNumber) { }
 
         public override void Create()
         {
@@ -51,7 +51,8 @@ namespace UI.Controllers
 
             try
             {
-                uow.AuthorRepository.Insert(author);
+                context.authors.Add(author);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -66,7 +67,9 @@ namespace UI.Controllers
 
             try
             {
-                uow.AuthorRepository.Delete(base.deleteId);
+                var entity = context.authors.Find(deleteId);
+                context.authors.Remove(entity);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -76,27 +79,34 @@ namespace UI.Controllers
         }
         public override void Read()
         {
-            uow.AuthorRepository.Select("");
+            foreach(var i in context.authors)
+            {
+                Console.WriteLine($"id: {i.Id}");
+                Console.WriteLine($"name: {i.Name}");
+                Console.WriteLine($"is woman: {i.Is_Woman}");
+                Console.WriteLine($"birthdate: {i.Birthdate}");
+            }
+            Console.ReadLine();
         }
 
         public override void Update()
         {
             base.Update();
-            uow.AuthorRepository.Update("author", base.fieldToUpdate, base.newValue, base.fieldToFind[0], base.oldValue[0]);
-        }
-        public override void Generate()
-        {
-            base.Generate();
-            uow.AuthorRepository.Generate(recordsAmount);
-            Console.WriteLine("Success. Press any key to continue...");
-            Console.ReadLine();
-
+            var entity = context.authors.Find(updateId);
+            context.authors.Update(entity);
+            context.SaveChanges();
         }
         public override void Find()
         {
             base.Find();
 
-            uow.AuthorRepository.Select(base.whereExpression);
+            var i = context.authors.Find(findId);
+
+            Console.WriteLine($"id: {i.Id}");
+            Console.WriteLine($"name: {i.Name}");
+            Console.WriteLine($"is woman: {i.Is_Woman}");
+            Console.WriteLine($"birthdate: {i.Birthdate}");
+            Console.ReadLine();
         }
         protected override void ChooseField(string appendString)
         {
